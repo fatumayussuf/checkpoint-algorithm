@@ -1,0 +1,47 @@
+ALGORITHM AnalyzeSentence
+Input: A sentence ending with a period (.)
+Output: Length of the sentence, number of words, and number of vowels
+
+VAR
+    length: INTEGER := 0;
+    words: INTEGER := 0;
+    vowels: INTEGER := 0;
+    in_word: BOOLEAN := false;
+    vowels_set: SET OF CHAR := {'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'};
+    char: CHAR;
+
+BEGIN
+    // Loop to read each character of the sentence
+    REPEAT
+        READ(char);
+        length := length + 1;
+
+        // Check if the character is a vowel
+        IF char IN vowels_set THEN
+            vowels := vowels + 1;
+        END IF;
+
+        // Check for spaces or period to determine word boundaries
+        IF char = ' ' THEN
+            IF in_word = true THEN
+                words := words + 1;
+                in_word := false;
+            END IF;
+        ELSE IF char = '.' THEN
+            // Period ends the sentence; if in a word, count the last word
+            IF in_word = true THEN
+                words := words + 1;
+            END IF;
+            // Exit the loop since the sentence ends with a period
+            BREAK;
+        ELSE
+            // If it's a part of a word, mark in_word as true
+            in_word := true;
+        END IF;
+    UNTIL end of input;
+
+    // Output the results
+    PRINT "Length of the sentence: " + length;
+    PRINT "Number of words: " + words;
+    PRINT "Number of vowels: " + vowels;
+END
